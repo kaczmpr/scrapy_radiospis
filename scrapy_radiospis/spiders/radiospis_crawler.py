@@ -5,16 +5,17 @@ from datetime import datetime, timedelta
 class RadiospisCrawlerSpider(scrapy.Spider):
     name = 'radiospis_crawler'
     allowed_domains = ['radiospis.pl']
-    broadcasts = ['rmf-fm', 'zet', 'vox-fm', 'eska', 'muzo-fm', 'trojka']
-    _dates = [(datetime.today() - timedelta(days=n)).strftime('%Y-%m-%d') for n in range(7)]
-    _start_urls=[]
+    broadcasts = ['rmf-fm', 'zet', 'vox-fm', 'eska', 'muzo-fm', 'trojka', 'antyradio', 'rock-radio', 'zlote-przeboje']
+    _dates = [(datetime.today() - timedelta(days=n)).strftime('%Y-%m-%d') for n in range(8)]
+    _start_urls = []
     for broadcast in broadcasts:
-        for hour in range(1,24):
+        for hour in range(1, 24):
             for date in _dates:
-                _start_urls.append('https://radiospis.pl/szukaj?stacja={broadcast}&dzien={date}&godzina={hour:02}'.format(
-                    broadcast=broadcast,
-                    hour=hour,
-                    date=date))
+                _start_urls.append(
+                    'https://radiospis.pl/szukaj?stacja={broadcast}&dzien={date}&godzina={hour:02}'.format(
+                        broadcast=broadcast,
+                        hour=hour,
+                        date=date))
     start_urls = _start_urls
 
     def parse(self, response):
